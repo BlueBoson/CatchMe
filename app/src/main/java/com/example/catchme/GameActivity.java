@@ -18,6 +18,7 @@ public class GameActivity extends AppCompatActivity {
     public enum Sprites {
         CHARACTER,
         FLOOR,
+        BACKGROUND,
     }
 
     private GameView gameView;
@@ -33,6 +34,7 @@ public class GameActivity extends AppCompatActivity {
         Map<Sprites, Bitmap> bitmaps = new HashMap<Sprites, Bitmap>() {{
             put(Sprites.CHARACTER, BitmapFactory.decodeResource(getResources(), R.drawable.character));
             put(Sprites.FLOOR, BitmapFactory.decodeResource(getResources(), R.drawable.floor));
+            put(Sprites.BACKGROUND, BitmapFactory.decodeResource(getResources(), R.drawable.background));
         }};
         gameView.start(bitmaps);
     }

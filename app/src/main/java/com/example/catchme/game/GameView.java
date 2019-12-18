@@ -25,27 +25,31 @@ public class GameView extends View {
     static private final int MIN_SEGMENT_NUM = 2;
     static private final int MAX_SEGMENT_NUM = 5;
 
-    private Character character = null;
-    private List<Floor> floors = new ArrayList<>();
-    Map<GameActivity.Sprites, Bitmap> bitmaps = null;
+    private Character character;
+    private Background background;
+    private List<Floor> floors;
+    Map<GameActivity.Sprites, Bitmap> bitmaps;
     private long frame = 0;
     private boolean clicked = false;
-    private Paint paint = null;
+    private Paint paint;
 
     public GameView(Context context) {
         super(context);
-        paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
+        init();
     }
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
+        init();
     }
 
     public GameView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
+    }
+
+    private void init() {
+        floors = new ArrayList<>();
         paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
     }
@@ -94,6 +98,7 @@ public class GameView extends View {
         floors.add(firstFloor);
         character = new Character(bitmaps.get(GameActivity.Sprites.CHARACTER));
         character.adjust(canvas, this);
+        background = new Background(bitmaps.get(GameActivity.Sprites.BACKGROUND));
     }
 
     void generateFloorIfCan(Canvas canvas) {
@@ -126,6 +131,7 @@ public class GameView extends View {
         frame++;
         deleteDestroyed();
         generateFloorIfCan(canvas);
+        background.draw(canvas, paint, this);
         character.draw(canvas, paint, this);
         for (Floor floor: floors) {
             floor.draw(canvas, paint, this);

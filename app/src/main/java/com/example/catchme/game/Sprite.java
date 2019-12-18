@@ -11,7 +11,7 @@ class Sprite {
     private float x = 0;
     private float y = 0;
     private float collideOffset = 0;
-    private Bitmap bitmap = null;
+    private Bitmap bitmap;
     private boolean destroyed = false;
     private int frame = 0;
 

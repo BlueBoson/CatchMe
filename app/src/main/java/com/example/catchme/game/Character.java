@@ -67,12 +67,13 @@ class Character extends Sprite {
             }
         } else {
             float oldY = getY();
-            float floorY = gameView.getFloorY(getX());
-            if (oldY + getHeight() >= floorY && oldY + getHeight() - jumpVelocity < floorY) {
+            float floorY = gameView.getFloorY(getX() + getWidth() / 2);
+            if (oldY + getHeight() / 2 <= floorY && oldY + getHeight() + jumpVelocity > floorY) {
                 setY(floorY - getHeight());
                 canJump = true;
             } else {
                 move(0, jumpVelocity);
+                canJump = false;
             }
         }
         if(getFrame() % FLASH_FRAME_NUM == 0){
