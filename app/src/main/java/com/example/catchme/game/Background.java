@@ -6,9 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-public class Background extends Sprite {
+class Background extends Sprite {
 
-    static private final float BG_VELOCITY_RATE = 0.002f;
+    static private float velocityRate =0;
 
     private float posRate = 0;
 
@@ -16,10 +16,18 @@ public class Background extends Sprite {
         super(bitmap);
     }
 
+    static void setVelocityRate(float velocityRate) {
+        Background.velocityRate = velocityRate;
+    }
+
+    static float getVelocityRate() {
+        return velocityRate;
+    }
+
     @Override
     void beforeDraw(Canvas canvas, Paint paint, GameView gameView) {
         super.beforeDraw(canvas, paint, gameView);
-        posRate += BG_VELOCITY_RATE;
+        posRate += velocityRate;
         if (posRate >= 1) {
             posRate -= 1;
         }

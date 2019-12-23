@@ -7,13 +7,15 @@ import android.graphics.Rect;
 
 class Character extends Sprite {
 
-    static private final float HEIGHT_RATE = 0.25f;
-    static private final float VELOCITY_RATE = 0.04f;
+    static private final float HEIGHT_RATE = 0.2f;
+    static private final float JUMP_VELOCITY_RATE = 0.05f;
+    static private final float FALL_VELOCITY_RATE = 0.06f;
     static private final int FLASH_FRAME_NUM = 10;
     static private final int SEGMENT_NUM = 4;
 
     private float jumpHeight = 0;
     private float jumpVelocity = 0;
+    private float fallVelocity = 0;
     private float jumpOrigin = 0;
     private boolean canJump = true;
     private boolean jumping = false;
@@ -25,7 +27,8 @@ class Character extends Sprite {
 
     void adjust(Canvas canvas, GameView gameView) {
         jumpHeight = canvas.getHeight() * HEIGHT_RATE;
-        jumpVelocity = jumpHeight * VELOCITY_RATE;
+        jumpVelocity = jumpHeight * JUMP_VELOCITY_RATE;
+        fallVelocity = jumpHeight * FALL_VELOCITY_RATE;
         centerTo(canvas.getWidth() / 2, 0);
         setY(gameView.getFloorY(getX()) - getHeight() - 1);
     }
@@ -68,11 +71,11 @@ class Character extends Sprite {
         } else {
             float oldY = getY();
             float floorY = gameView.getFloorY(getX() + getWidth() / 2);
-            if (oldY + getHeight() / 2 <= floorY && oldY + getHeight() + jumpVelocity > floorY) {
+            if (oldY + getHeight() / 2 <= floorY && oldY + getHeight() + fallVelocity > floorY) {
                 setY(floorY - getHeight());
                 canJump = true;
             } else {
-                move(0, jumpVelocity);
+                move(0, fallVelocity);
                 canJump = false;
             }
         }

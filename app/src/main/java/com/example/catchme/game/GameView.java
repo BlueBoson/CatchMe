@@ -24,6 +24,8 @@ public class GameView extends View {
     static private final float GAP_RATE = 0.05f;
     static private final int MIN_SEGMENT_NUM = 2;
     static private final int MAX_SEGMENT_NUM = 5;
+    static private final float BG_VELOCITY_RATE = 0.002f;
+    static private final float OBJECT_VELOCITY_RATE = 0.005f;
 
     private Character character;
     private Background background;
@@ -99,6 +101,8 @@ public class GameView extends View {
         character = new Character(bitmaps.get(GameActivity.Sprites.CHARACTER));
         character.adjust(canvas, this);
         background = new Background(bitmaps.get(GameActivity.Sprites.BACKGROUND));
+        Background.setVelocityRate(BG_VELOCITY_RATE);
+        LeftMovingSprite.setVelocityRate(OBJECT_VELOCITY_RATE);
     }
 
     void generateFloorIfCan(Canvas canvas) {
