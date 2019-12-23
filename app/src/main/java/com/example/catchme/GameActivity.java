@@ -19,6 +19,7 @@ public class GameActivity extends AppCompatActivity {
         CHARACTER,
         FLOOR,
         BACKGROUND,
+        PAUSE,
     }
 
     private GameView gameView;
@@ -35,6 +36,7 @@ public class GameActivity extends AppCompatActivity {
             put(Sprites.CHARACTER, BitmapFactory.decodeResource(getResources(), R.drawable.character));
             put(Sprites.FLOOR, BitmapFactory.decodeResource(getResources(), R.drawable.floor));
             put(Sprites.BACKGROUND, BitmapFactory.decodeResource(getResources(), R.drawable.background));
+            put(Sprites.PAUSE, BitmapFactory.decodeResource(getResources(), R.drawable.pause));
         }};
         gameView.start(bitmaps);
     }
