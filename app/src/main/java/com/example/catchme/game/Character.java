@@ -7,6 +7,7 @@ import android.graphics.Rect;
 
 class Character extends Sprite {
 
+    static private final float COLLIDE_OFFSET_RATE = 0.1f;
     static private final float HEIGHT_RATE = 0.2f;
     static private final float JUMP_VELOCITY_RATE = 0.05f;
     static private final float FALL_VELOCITY_RATE = 0.06f;
@@ -23,6 +24,7 @@ class Character extends Sprite {
 
     Character(Bitmap bitmap){
         super(bitmap);
+        setCollideOffset(COLLIDE_OFFSET_RATE * getHeight());
     }
 
     void adjust(Canvas canvas, GameView gameView) {

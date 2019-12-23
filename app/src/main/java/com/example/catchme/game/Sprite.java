@@ -39,6 +39,10 @@ class Sprite {
         return y;
     }
 
+    void setCollideOffset(float collideOffset) {
+        this.collideOffset = collideOffset;
+    }
+
     float getWidth(){
         if(bitmap != null){
             return bitmap.getWidth();

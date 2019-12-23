@@ -20,6 +20,12 @@ import java.util.Random;
 
 public class GameView extends View {
 
+    enum Status {
+        RUN,
+        PAUSE,
+        OVER,
+    }
+
     static private final int GROUND_LEVEL_NUM = 5;
     static private final float GAP_RATE = 0.05f;
     static private final int MIN_SEGMENT_NUM = 2;
@@ -27,6 +33,7 @@ public class GameView extends View {
     static private final float BG_VELOCITY_RATE = 0.002f;
     static private final float OBJECT_VELOCITY_RATE = 0.005f;
 
+    private Status status = Status.RUN;
     private Character character;
     private Background background;
     private List<Floor> floors;
@@ -56,11 +63,11 @@ public class GameView extends View {
         paint.setStyle(Paint.Style.FILL);
     }
 
-    float floorLevelY(Canvas canvas, int level) {
+    private float floorLevelY(Canvas canvas, int level) {
         return canvas.getHeight() / (GROUND_LEVEL_NUM + 2) * (GROUND_LEVEL_NUM  - level);
     }
 
-    Floor randomRightFloor(Canvas canvas, Floor rightFloor) {
+    private Floor randomRightFloor(Canvas canvas, Floor rightFloor) {
         Random r = new Random();
         int segments = r.nextInt(MAX_SEGMENT_NUM - MIN_SEGMENT_NUM + 1)
                 + MIN_SEGMENT_NUM;
@@ -78,7 +85,7 @@ public class GameView extends View {
         return floor;
     }
 
-    float getFloorY(float x) {
+   float getFloorY(float x) {
         float y = 0;
         for (Floor floor: floors) {
             if (floor.getX() <= x && floor.getX() + floor.getWidth() >= x) {
@@ -93,7 +100,9 @@ public class GameView extends View {
         postInvalidate();
     }
 
-    void initGame(Canvas canvas) {
+    private void initGame(Canvas canvas) {
+        frame = 0;
+        clicked = false;
         Floor firstFloor = new Floor(bitmaps.get(GameActivity.Sprites.FLOOR), MAX_SEGMENT_NUM);
         firstFloor.centerTo(canvas.getWidth() / 2, floorLevelY(canvas, 0));
         firstFloor.setLevel(0);
@@ -103,16 +112,17 @@ public class GameView extends View {
         background = new Background(bitmaps.get(GameActivity.Sprites.BACKGROUND));
         Background.setVelocityRate(BG_VELOCITY_RATE);
         LeftMovingSprite.setVelocityRate(OBJECT_VELOCITY_RATE);
+        status = Status.RUN;
     }
 
-    void generateFloorIfCan(Canvas canvas) {
+    private void generateFloorIfCan(Canvas canvas) {
         Floor rightFloor = floors.get(floors.size() - 1);
         if (rightFloor.getX() < canvas.getWidth()) {
             floors.add(randomRightFloor(canvas, rightFloor));
         }
     }
 
-    void deleteDestroyed() {
+    private void deleteDestroyed() {
         Iterator<Floor> iterator = floors.iterator();
         while (iterator.hasNext()) {
             Floor floor = iterator.next();
@@ -122,9 +132,7 @@ public class GameView extends View {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    private void drawGameRunning(Canvas canvas) {
         if (frame == 0) {
             initGame(canvas);
         }
@@ -141,6 +149,27 @@ public class GameView extends View {
             floor.draw(canvas, paint, this);
         }
         postInvalidate();
+
+    }
+
+    private void drawGamePause(Canvas canvas) {
+
+    }
+
+    private void drawGameOver(Canvas canvas) {
+
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (status == Status.RUN) {
+            drawGameRunning(canvas);
+        } else if (status == Status.PAUSE) {
+            drawGamePause(canvas);
+        } else if (status == Status.OVER) {
+            drawGameOver(canvas);
+        }
     }
 
     @Override
