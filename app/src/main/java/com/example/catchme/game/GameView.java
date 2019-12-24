@@ -60,6 +60,7 @@ public class GameView extends View {
     private int crashId = 0;
     private int jumpId = 0;
     private int streamId = 0;
+    private int loadedNum = 0;
     private boolean soundLoaded = false;
 
     public GameView(Context context) {
@@ -101,8 +102,11 @@ public class GameView extends View {
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                if (!soundLoaded && bgmId > 0) {
-                    soundLoaded = true;
+                synchronized (SoundPool.class) {
+                    loadedNum += 1;
+                    if (!soundLoaded && loadedNum >= 3) {
+                        soundLoaded = true;
+                    }
                 }
             }
         });
