@@ -39,6 +39,7 @@ public class GameView extends View {
     static private final float GAP_RATE = 0.05f;
     static private final float PAUSE_RATE = 0.03f;
     static private final int SCORE_RATE = 20;
+    static private final int SOUND_NUM = 3;
 
     private Status status = Status.RUN;
     private Character character;
@@ -96,20 +97,20 @@ public class GameView extends View {
         attrBuilder.setLegacyStreamType(AudioManager.STREAM_MUSIC);
         builder.setAudioAttributes(attrBuilder.build());
         soundPool = builder.build();
-        bgmId = soundPool.load(this.getContext(), R.raw.background,1);
-        crashId = soundPool.load(this.getContext(), R.raw.crash,1);
-        jumpId = soundPool.load(this.getContext(), R.raw.jump,1);
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
                 synchronized (SoundPool.class) {
                     loadedNum += 1;
-                    if (!soundLoaded && loadedNum >= 3) {
+                    if (!soundLoaded && loadedNum >= SOUND_NUM) {
                         soundLoaded = true;
                     }
                 }
             }
         });
+        bgmId = soundPool.load(this.getContext(), R.raw.background,1);
+        crashId = soundPool.load(this.getContext(), R.raw.crash,1);
+        jumpId = soundPool.load(this.getContext(), R.raw.jump,1);
     }
 
     private void playBgm() {
