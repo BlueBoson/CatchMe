@@ -7,12 +7,14 @@ import android.graphics.Rect;
 
 class Character extends Sprite {
 
-    static private final float COLLIDE_OFFSET_RATE = 0.1f;
+    static private final float COLLIDE_OFFSET_RATE = -0.3f;
     static private final float HEIGHT_RATE = 0.2f;
     static private final float JUMP_VELOCITY_RATE = 0.05f;
     static private final float FALL_VELOCITY_RATE = 0.06f;
     static private final int FLASH_FRAME_NUM = 10;
     static private final int SEGMENT_NUM = 4;
+    static private final int SHOOT_FRAME = 1000;
+    static private final int SHOOT_GAP = 20;
 
     private float jumpHeight = 0;
     private float jumpVelocity = 0;
@@ -21,6 +23,7 @@ class Character extends Sprite {
     private boolean canJump = true;
     private boolean jumping = false;
     private int level = 0;
+    private int shoots = 0;
 
     Character(Bitmap bitmap){
         super(bitmap);
@@ -32,7 +35,7 @@ class Character extends Sprite {
         jumpVelocity = jumpHeight * JUMP_VELOCITY_RATE;
         fallVelocity = jumpHeight * FALL_VELOCITY_RATE;
         centerTo(canvas.getWidth() / 2, 0);
-        setY(gameView.getFloorY(getX()) - getHeight() - 1);
+        setY(gameView.getCenterFloorY(getX()) - getHeight() - 1);
     }
 
     void jump() {
@@ -42,6 +45,10 @@ class Character extends Sprite {
         jumping = true;
         canJump = false;
         jumpOrigin = getY();
+    }
+
+    void shoot() {
+        shoots = SHOOT_FRAME;
     }
 
     @Override
@@ -72,7 +79,7 @@ class Character extends Sprite {
             }
         } else {
             float oldY = getY();
-            float floorY = gameView.getFloorY(getX() + getWidth() / 2);
+            float floorY = gameView.getCenterFloorY(getX() + getWidth() / 2);
             if (oldY + getHeight() / 2 <= floorY && oldY + getHeight() + fallVelocity > floorY) {
                 setY(floorY - getHeight());
                 canJump = true;
@@ -85,6 +92,17 @@ class Character extends Sprite {
             level++;
             if(level >= SEGMENT_NUM){
                 level = 0;
+            }
+        }
+    }
+
+    @Override
+    void afterDraw(Canvas canvas, Paint paint, GameView gameView) {
+        super.afterDraw(canvas, paint, gameView);
+        if (shoots > 0) {
+            shoots -= 1;
+            if (shoots % SHOOT_GAP == 0) {
+                gameView.shoot();
             }
         }
     }

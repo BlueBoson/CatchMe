@@ -110,6 +110,8 @@ class Sprite {
         if(isIntersect){
             p = new Point(Math.round(rectF.centerX()), Math.round(rectF.centerY()));
         }
+        rectF1 = getCollideRectF();
+        rectF2 = s.getCollideRectF();
         return p;
     }
 

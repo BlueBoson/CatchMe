@@ -20,6 +20,11 @@ public class GameActivity extends AppCompatActivity {
         FLOOR,
         BACKGROUND,
         PAUSE,
+        MONSTER,
+        COIN,
+        GUN,
+        BULLET,
+        EXPLOSION,
     }
 
     private GameView gameView;
@@ -37,6 +42,12 @@ public class GameActivity extends AppCompatActivity {
             put(Sprites.FLOOR, BitmapFactory.decodeResource(getResources(), R.drawable.floor));
             put(Sprites.BACKGROUND, BitmapFactory.decodeResource(getResources(), R.drawable.background));
             put(Sprites.PAUSE, BitmapFactory.decodeResource(getResources(), R.drawable.pause));
+            put(Sprites.MONSTER, BitmapFactory.decodeResource(getResources(), R.drawable.monster));
+            put(Sprites.COIN, BitmapFactory.decodeResource(getResources(), R.drawable.coin));
+            put(Sprites.GUN, BitmapFactory.decodeResource(getResources(), R.drawable.gun));
+            put(Sprites.BULLET, BitmapFactory.decodeResource(getResources(), R.drawable.bullet));
+            put(Sprites.EXPLOSION, BitmapFactory.decodeResource(getResources(), R.drawable.explosion));
+
         }};
         gameView.start(bitmaps);
     }
